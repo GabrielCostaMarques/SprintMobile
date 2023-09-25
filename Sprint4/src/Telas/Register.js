@@ -29,7 +29,7 @@ const Lista = () => {
   );
 };
 
-const SignIn=()=> {
+const SignIn=({navigation})=> {
   const contexto = useContext(Contexto);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -43,6 +43,7 @@ const SignIn=()=> {
         placeholder="Digite seu Nome"
         value={nome}
         onChangeText={setNome}
+        minLength={1}
       />
       <TextInput
         style={style.input}
@@ -60,7 +61,9 @@ const SignIn=()=> {
 
       <TouchableOpacity value="Cadastrar" onPress={()=>{
         const obj={nome,email,senha}
-        contexto.cadastrar(obj)
+        contexto.cadastrar(obj);
+        navigation.navigate('Login')
+        
       }}>
         <View style={style.btnCadastrar}>
           <Text style={style.btnText}>Cadastre-se</Text>

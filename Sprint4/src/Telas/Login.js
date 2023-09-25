@@ -11,8 +11,10 @@ import {
 
 import { Contexto } from "../components/contexto";
 
-const LogIn=() =>{
+const Login=({navigation}) =>{
   const contexto = useContext(Contexto);
+  const [email, setEmail]=useState("")
+  const [senha, setSenha]=useState("")
   return (
     <View style={style.container}>
       <Text style={style.title}>Login</Text>
@@ -32,11 +34,15 @@ const LogIn=() =>{
           value={senha}
           secureTextEntry={true}
           placeholder="Digite sua senha"
+          minLength={1}
         />
       </View>
 
       <View>
-        <TouchableOpacity onPress={contexto.salvar}>
+        <TouchableOpacity onPress={()=>{
+            contexto.salvar
+            navigation.navigate('Menu')
+        }}>
           <View style={style.btnLogin}>
             <Text style={style.btnText}>Logar</Text>
           </View>
@@ -46,7 +52,7 @@ const LogIn=() =>{
   );
 }
 
-export default LogIn
+export default Login
 
 const style = StyleSheet.create({
   container: {
