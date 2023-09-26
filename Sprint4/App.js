@@ -15,6 +15,7 @@ import HomeScreen from "./src/Telas/Intro";
 import RegisterScreen from "./src/Telas/Register";
 import LoginScreen from "./src/Telas/Login";
 import ChatScreen from "./src/Telas/Chat";
+import Menu from "./src/Telas/MenuProfile"
 
 
 
@@ -31,7 +32,7 @@ const MenuScreen=()=>{
       <NavigationContainer independent={true}>
         <Tab.Navigator>
           <Tab.Screen name="ChatBot" component={ChatScreen}/>
-          <Tab.Screen name="Home" component={HomeScreen}/>
+          <Tab.Screen name="Menu" component={Menu}/>
         </Tab.Navigator>
       </NavigationContainer>
     </View>
