@@ -17,11 +17,23 @@ export default function Chat() {
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('');
   useEffect(() => {
-    setTimeout(() => setMessages(msgs => ([{ id: new Date().getTime(), type: 'receive', text: 'Olá, como podemos te ajudar?' }, ...msgs])), 1000);
+    setTimeout(() => 
+    setMessages(msgs => 
+      ([{ 
+        id: new Date().getTime(),
+        type: 'receive',
+        text: 'Olá, como podemos te ajudar?' }, ...msgs])), 1000);
   }, [])
-  const sendMsg = () => { setMessages([{ id: new Date().getTime(), type: 'send', text: message }, ...messages]); setMessage('') };
-  //Linha para testar a reposta
-  const receiveMsg = () => { setMessages([{ id: new Date().getTime(), type: 'receive', text: message }, ...messages]); setMessage('') };
+  const sendMsg = () => { 
+    setMessages([{ 
+      id: new Date().getTime(), 
+      type: 'send', text: message }, ...messages]); setMessage('') };
+    //Linha para testar a reposta
+
+  const receiveMsg = () => { 
+    setMessages([{ id: new Date().getTime(),
+       type: 'receive', 
+       text: message }, ...messages]); setMessage('') };
   return (
     <View style={styles.container}>
 
