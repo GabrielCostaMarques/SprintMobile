@@ -12,30 +12,27 @@ const TypingAnimation = ({ text }) => {
 
   const typeText = async () => {
     const textToType = text.split('');
-    const interval = 100; // Ajuste a velocidade da digitação aqui
+    const interval = 50;
 
     for (let i = 0; i < textToType.length; i++) {
       await new Promise((resolve) => setTimeout(resolve, interval));
       setTypedText((prevText) => prevText + textToType[i]);
     }
-
-    // Inicie a animação do cursor após a digitação completa
-    cursorAnimationRef.current?.pulse(800);
+    cursorAnimationRef.current?.pulse(900);
   };
 
   return (
     <View style={{ alignItems: 'center' }}>
-      <Animatable.View 
-      animation="fadeInLeft">
+      <Animatable.View>
         
         <Text style={{ fontSize: 24, whiteSpace: 'nowrap', overflow: 'hidden' }}>{typedText}</Text>
 
         <Animatable.View 
         ref={cursorAnimationRef} 
-        animation="flash" 
+        animation="flash"
         easing="ease-out" 
         iterationCount="infinite" 
-        style={{ position: 'absolute', top: 0, left: 0 }}>
+        style={{ position: 'absolute', top: 5, right: -10 }}>
 
           <Text style={{ display: 'inline-block', width: 10, height: 24, backgroundColor: '#000' }} />
         </Animatable.View>

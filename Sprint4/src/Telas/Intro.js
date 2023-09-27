@@ -10,7 +10,7 @@ const Home = ({navigation}) => {
     <View style={styles.container}>
       <Image style={styles.logo} source={IconHome} />
       <Text style={styles.titulo}>Seja Bem - Vindo !</Text>
-      <TypingAnimation text="Somos a Byte Wizards. Aqui está uma prévia da ferrament"/>
+      <TypingAnimation text="Somos a Byte Wizards. Aqui está uma prévia da ferramenta utilizando ChatGPT"/>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {navigation.navigate('Cadastrar')}}>
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ef4023',
+    overflow:"hidden"
   },
   logo: {
     marginBottom: 50,
