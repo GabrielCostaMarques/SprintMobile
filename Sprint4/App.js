@@ -12,18 +12,33 @@ import { Contexto } from "./src/components/contexto";
 
 // Importe de telas
 import HomeScreen from "./src/Telas/Intro";
-import SignInScreen from "./src/Telas/SignIn";
+import RegisterScreen from "./src/Telas/Register";
 import LoginScreen from "./src/Telas/Login";
 import ChatScreen from "./src/Telas/Chat";
+import Menu from "./src/Telas/MenuProfile"
+
 
 
 
 const Stack = createStackNavigator();
-//const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 
 const api = axios.create({ baseURL: "https://databs-b6b35-default-rtdb.firebaseio.com" });
-export default function App() {
+
+const MenuScreen=()=>{
+  return(
+    <View style={{flex:1}}>
+      <NavigationContainer independent={true}>
+        <Tab.Navigator>
+          <Tab.Screen name="ChatBot" component={ChatScreen}/>
+          <Tab.Screen name="Menu" component={Menu}/>
+        </Tab.Navigator>
+      </NavigationContainer>
+    </View>
+  )
+}
+export default function App({navigation}) {
 
 const [lista, setLista] = useState([]);
 const salvar = (obj) => {
@@ -74,8 +89,9 @@ const salvar = (obj) => {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Cadastrar" component={SignInScreen} />
+            <Stack.Screen name="Cadastrar" component={RegisterScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Menu" component={MenuScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

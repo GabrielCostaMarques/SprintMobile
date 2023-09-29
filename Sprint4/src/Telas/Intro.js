@@ -2,16 +2,15 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
 
 import IconHome from "../../assets/Home.png";
-import Arrow from "../../assets/arrow.png"
+import Arrow from "../../assets/arrow.png";
+import TypingAnimation from "../components/AnimationText"
 
 const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={IconHome} />
       <Text style={styles.titulo}>Seja Bem - Vindo !</Text>
-      <Text style={styles.subtitulo}>
-        Somos a Byte Wizards. Aqui está uma prévia da ferramenta que estamos desenvolvendo...
-      </Text>
+      <TypingAnimation text="Somos a Byte Wizards. Aqui está uma prévia da ferramenta utilizando ChatGPT"/>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {navigation.navigate('Cadastrar')}}>
@@ -29,6 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ef4023',
+    overflow:"hidden"
   },
   logo: {
     marginBottom: 50,
