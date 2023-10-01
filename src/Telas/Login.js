@@ -8,10 +8,9 @@ import {
   StatusBar,
   StyleSheet,
 } from "react-native";
-
 import { Contexto } from "../components/contexto";
 import { api, API_URL } from "../api";
-import { Toaster, toast } from "react-hot-toast";
+import { onSucess, onError } from "../components/Toast";
 
 const Login = ({ navigation }) => {
   const contexto = useContext(Contexto);
@@ -27,12 +26,14 @@ const Login = ({ navigation }) => {
 
       if (response.status === 200) {
         contexto.salvar(response.data);
+        onSucess(`${response.data}`);
         navigation.navigate("Menu");
       } else {
-        toast.error("Credenciais inválidas");
+        onError(error.message + error.code  ?? `Credenciais inválidas`);
       }
     } catch (error) {
-      toast.error("Falha no login. Verifique suas credenciais.");
+      onError(error.message + error.code  ?? `Falha no login. Verifique suas credenciais!!`);
+      console.log(JSON.stringify(error))
     }
   };
 
