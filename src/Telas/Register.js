@@ -8,6 +8,7 @@ import {
 import { Contexto } from "../components/contexto";
 import { useContext, useState } from "react";
 import { api, API_URL } from "../api";
+import { onSucess, onError } from "../components/Toast";
 
 const Lista = () => {
   const contexto = useContext(Contexto);
@@ -44,12 +45,13 @@ const SignIn = ({ navigation }) => {
   const cadastrarUsuario = (obj) => {
     api
       .post(`${API_URL}usuarios/cadastrar`, obj)
-      .then(function (response) {
-        console.log("Cadastro realizado com sucesso!", response.data);
+      .then((response) => {
+        console.log("Cadastro realizado com sucesso!");
+        onSucess(`${response.data}`);
         navigation.navigate("Login");
       })
-      .catch(function (error) {
-        console.error("Erro ao cadastrar:", error);
+      .catch((error) => {
+        onError(error.message ?? `Erro ao cadastrar:${error.message}`);
       });
   };
 
