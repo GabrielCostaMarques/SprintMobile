@@ -10,11 +10,32 @@ import {
 } from "react-native";
 
 import { Contexto } from "../components/contexto";
+import { api, API_URL } from "../api";
+import { Toaster, toast } from "react-hot-toast";
 
-const Login=({navigation}) =>{
+const Login = ({ navigation }) => {
   const contexto = useContext(Contexto);
-  const [email, setEmail]=useState("")
-  const [senha, setSenha]=useState("")
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await api.post(`${API_URL}usuarios/login`, {
+        email,
+        senha,
+      });
+
+      if (response.status === 200) {
+        contexto.salvar(response.data);
+        navigation.navigate("Menu");
+      } else {
+        toast.error("Credenciais inválidas");
+      }
+    } catch (error) {
+      toast.error("Falha no login. Verifique suas credenciais.");
+    }
+  };
+
   return (
     <View style={style.container}>
       <Text style={style.title}>Login</Text>
@@ -39,10 +60,13 @@ const Login=({navigation}) =>{
       </View>
 
       <View>
-        <TouchableOpacity onPress={()=>{
-            contexto.salvar
-            navigation.navigate('Menu')
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            handleLogin();
+            // contexto.salvar
+            // navigation.navigate('Menu')
+          }}
+        >
           <View style={style.btnLogin}>
             <Text style={style.btnText}>Logar</Text>
           </View>
@@ -50,9 +74,9 @@ const Login=({navigation}) =>{
       </View>
     </View>
   );
-}
+};
 
-export default Login
+export default Login;
 
 const style = StyleSheet.create({
   container: {
