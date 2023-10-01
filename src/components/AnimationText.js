@@ -25,7 +25,7 @@ const TypingAnimation = ({ text }) => {
     <View style={{ alignItems: 'center' }}>
       <Animatable.View>
         
-        <Text style={{ fontSize: 24, whiteSpace: 'nowrap', overflow: 'hidden' }}>{typedText}</Text>
+        <Text style={{ fontSize: 24, overflow: 'hidden' }}>{typedText}</Text>
 
         <Animatable.View 
         ref={cursorAnimationRef} 
@@ -34,7 +34,7 @@ const TypingAnimation = ({ text }) => {
         iterationCount="infinite" 
         style={{ position: 'absolute', top: 5, right: -10 }}>
 
-          <Text style={{ display: 'inline-block', width: 10, height: 24, backgroundColor: '#000' }} />
+          <Text style={{ width: 10, height: 24, backgroundColor: '#000' }} />
         </Animatable.View>
       </Animatable.View>
     </View>
