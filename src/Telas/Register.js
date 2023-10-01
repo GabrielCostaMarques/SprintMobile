@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Contexto } from "../components/contexto";
 import { useContext, useState } from "react";
-
+import { api, API_URL } from "../api";
 
 const Lista = () => {
   const contexto = useContext(Contexto);
@@ -29,11 +29,30 @@ const Lista = () => {
   );
 };
 
-const SignIn=({navigation})=> {
+const SignIn = ({ navigation }) => {
   const contexto = useContext(Contexto);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  const obj = {
+    nome: nome,
+    email: email,
+    senha: senha,
+  };
+
+  const cadastrarUsuario = (obj) => {
+    api
+      .post(`${API_URL}usuarios/cadastrar`, obj)
+      .then(function (response) {
+        console.log("Cadastro realizado com sucesso!", response.data);
+        navigation.navigate("Login");
+      })
+      .catch(function (error) {
+        console.error("Erro ao cadastrar:", error);
+      });
+  };
+
   return (
     <View style={style.body}>
       <Text style={style.btnText}>Cadastre-se agora mesmo!</Text>
@@ -59,21 +78,24 @@ const SignIn=({navigation})=> {
         onChangeText={setSenha}
       />
 
-      <TouchableOpacity value="Cadastrar" onPress={()=>{
-        const obj={nome,email,senha}
-        contexto.cadastrar(obj);
-        navigation.navigate('Login')
-        
-      }}>
+      <TouchableOpacity
+        value="Cadastrar"
+        onPress={() => {
+          const obj = { nome, email, senha };
+          cadastrarUsuario(obj);
+          // contexto.cadastrar(obj);
+          // navigation.navigate('Login')
+        }}
+      >
         <View style={style.btnCadastrar}>
           <Text style={style.btnText}>Cadastre-se</Text>
         </View>
       </TouchableOpacity>
     </View>
   );
-}
+};
 
-export default SignIn
+export default SignIn;
 
 //Estilização
 const style = StyleSheet.create({
