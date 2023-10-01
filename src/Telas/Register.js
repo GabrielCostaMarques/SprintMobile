@@ -51,7 +51,8 @@ const SignIn = ({ navigation }) => {
         navigation.navigate("Login");
       })
       .catch((error) => {
-        onError(error.message ?? `Erro ao cadastrar:${error.message}`);
+        onError(error.message + error.code  ?? `Erro ao cadastrar!!:`);
+        console.log(JSON.stringify(error))
       });
   };
 
