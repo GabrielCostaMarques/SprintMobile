@@ -29,10 +29,10 @@ const Login = ({ navigation }) => {
         onSucess(`${response.data}`);
         navigation.navigate("Menu");
       } else {
-        onError(error.message + error.code  ?? `Credenciais inválidas`);
+        onError(`${error.message}` ?? `Credenciais inválidas`);
       }
     } catch (error) {
-      onError(error.message + error.code  ?? `Falha no login. Verifique suas credenciais!!`);
+      onError(`${error.message}` ?? `Falha no login. Verifique suas credenciais!!`);
       console.log(JSON.stringify(error))
     }
   };
