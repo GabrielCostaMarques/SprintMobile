@@ -51,8 +51,13 @@ const SignIn = ({ navigation }) => {
         navigation.navigate("Login");
       })
       .catch((error) => {
-        onError(error.message + error.code  ?? `Erro ao cadastrar!!:`);
-        console.log(JSON.stringify(error))
+        if (typeof(error.response.data) == "object") {
+          let objErrors = error.response.data
+          let msgErroTratada = objErrors.errors.map(msg => msg.defaultMessage)[0]
+          onError(msgErroTratada);  
+        }else{
+          onError(error.response.data);  
+        }
       });
   };
 
