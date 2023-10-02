@@ -11,10 +11,7 @@
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
     "@react-navigation/bottom-tabs": "^6.5.9",
-<<<<<<< HEAD
-=======
     "@react-navigation/native": "^6.1.8",
->>>>>>> 9abbe063b7dcc4bf86602ad4995c09834925670d
     "@react-navigation/stack": "^6.3.18",
     "axios": "^1.5.1",
     "expo": "~49.0.11",
@@ -25,12 +22,7 @@
     "npx": "^10.2.2",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-native": "0.72.4",
-=======
-    "react-native": "0.72.5",
-    "react-native-animatable": "^1.3.3",
->>>>>>> 9abbe063b7dcc4bf86602ad4995c09834925670d
     "react-native-web": "^0.19.9"
   },
   "devDependencies": {
