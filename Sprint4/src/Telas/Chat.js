@@ -12,11 +12,13 @@ import {
 import imagemIA from '../../assets/IconIa.png';
 import seta from '../../assets/seta.png';
 import { AntDesign } from '@expo/vector-icons';
+import {resposta} from "../components/fakeApi"
 
 
 export default function Chat() {
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('');
+  const [receiveMessage, setReceiveMessage] = useState(resposta);
   useEffect(() => {
     setTimeout(() => 
     setMessages(msgs => 
@@ -33,8 +35,7 @@ export default function Chat() {
 
   const receiveMsg = () => { 
     setMessages([{ id: new Date().getTime(),
-       type: 'receive', 
-       text: message }, ...messages]); setMessage('') };
+       type: 'receive', text: resposta.bold }, ...messages]); setReceiveMessage(receiveMsg) };
   return (
     <View style={styles.container}>
 
