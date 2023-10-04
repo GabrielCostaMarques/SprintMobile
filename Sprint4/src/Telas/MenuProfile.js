@@ -73,7 +73,7 @@ export default function ScrollViewAnimatedHeader() {
                 <Animated.View
                 style={[styles.image,
                 {
-                    transform:[ {translatey:translateImageY},
+                    transform:[ {translateY:translateImageY},
                                 {translateX:translateImageX},
                                 {scale:scaleImage},
                             ],
