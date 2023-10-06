@@ -15,6 +15,7 @@
     "@react-navigation/stack": "^6.3.18",
     "axios": "^1.5.1",
     "expo": "~49.0.11",
+    "expo-google-fonts": "^0.0.0",
     "expo-status-bar": "~1.6.0",
     "i": "^0.3.7",
     "install": "^0.13.0",
@@ -24,7 +25,9 @@
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.72.4",
-    "react-native-web": "^0.19.9"
+    "react-native-web": "^0.19.9",
+    "undefined": "expo-google-fonts/roboto",
+    "expo-font": "~11.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

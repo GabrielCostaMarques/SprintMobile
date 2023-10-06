@@ -1,1 +1,1 @@
-npm i npm i axios npx expo install react-native-web@~0.19.6 react-dom@18.2.0 @expo/webpack-config@^19.0.0 npm install @react-navigation/native npm install @react-navigation/bottom-tabs npm install @react-navigation/stack
+npm i npm i axios npx expo install react-native-web@~0.19.6 react-dom@18.2.0 @expo/webpack-config@^19.0.0 npm install @react-navigation/native npm install @react-navigation/bottom-tabs npm install @react-navigation/stack npm i expo-google-fonts

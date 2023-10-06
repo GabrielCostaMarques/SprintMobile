@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import axios from 'axios';
 
 // Importe de Funções e componente
@@ -19,7 +20,7 @@ import Menu from "./src/Telas/MenuProfile"
 
 
 
-
+const esconderTab ={headerTransparent:true, headerShown:false}
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -30,9 +31,9 @@ const MenuScreen=()=>{
   return(
     <View style={{flex:1}}>
       <NavigationContainer independent={true}>
-        <Tab.Navigator>
-          <Tab.Screen name="ChatBot" component={ChatScreen}/>
-          <Tab.Screen name="Menu" component={Menu}/>
+        <Tab.Navigator initialRouteName="Página">
+          <Tab.Screen name="ChatBot" component={ChatScreen} options={esconderTab}/>
+          <Tab.Screen name="Menu" component={Menu}options={esconderTab}/>
         </Tab.Navigator>
       </NavigationContainer>
     </View>
@@ -88,10 +89,10 @@ const salvar = (obj) => {
       <View style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Cadastrar" component={RegisterScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Menu" component={MenuScreen} />
+            <Stack.Screen name="Home" component={HomeScreen}options={esconderTab} />
+            <Stack.Screen name="Cadastrar" component={RegisterScreen}options={esconderTab} />
+            <Stack.Screen name="Login" component={LoginScreen} options={esconderTab}/>
+            <Stack.Screen name="Menu" component={MenuScreen} options={esconderTab}/>
           </Stack.Navigator>
         </NavigationContainer>
       </View>
