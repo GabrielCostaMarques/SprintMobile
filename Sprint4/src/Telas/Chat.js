@@ -1,163 +1,107 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useState } from "react";
 import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
   View,
-  Image,
+  Text,
+  FlatList,
+  TextInput,
   TouchableOpacity,
-} from 'react-native';
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
 
-import imagemIA from '../../assets/IconIa.png';
-import seta from '../../assets/seta.png';
-import { AntDesign } from '@expo/vector-icons';
-import {resposta} from "../components/fakeApi"
+import respostaApiGPT from "../components/apiGPT";
 
+const ChatScreen = () => {
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
 
-export default function Chat() {
-  const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState('');
-  const [receiveMessage, setReceiveMessage] = useState(resposta);
-  useEffect(() => {
-    setTimeout(() => 
-    setMessages(msgs => 
-      ([{ 
-        id: new Date().getTime(),
-        type: 'receive',
-        text: 'Olá, como podemos te ajudar?' }, ...msgs])), 1000);
-  }, [])
-  const sendMsg = () => { 
-    setMessages([{ 
-      id: new Date().getTime(), 
-      type: 'send', text: message }, ...messages]); setMessage('') };
-    //Linha para testar a reposta
+  const handleSendMessage = () => {
+    if (inputMessage.trim() === "") return;
 
-  const receiveMsg = () => { 
-    setMessages([{ id: new Date().getTime(),
-       type: 'receive', text: resposta.bold }, ...messages]); setReceiveMessage(receiveMsg) };
-  return (
-    <View style={styles.container}>
+    const newMessage = {
+      id: Math.random().toString(),
+      text: inputMessage,
+      timestamp: new Date().toLocaleTimeString(),
+    };
 
-      <View className="topo" style={styles.topo}><Image source={seta} /></View>
-      <FlatList 
-      data={messages} 
-      keyExtractor={x => x.id} 
-      renderItem={({ item, index }) => <ChatItemMemo {...{ item, index }} />} 
-      inverted contentContainerStyle={styles.listStyle} />
-      <View style={styles.bottom}>
-
-        <TextInput 
-        style={styles.input} 
-        value={message} 
-        placeholder='Envie uma mensagem'
-        onChangeText={setMessage} />
-        <TouchableOpacity 
-        style={styles.button} 
-        onPress={sendMsg} 
-        disabled={message.length === 0}>
-          <Text style={styles.bottomText}><AntDesign name="right" size={24} color="black" /></Text>
-        </TouchableOpacity>
-      </View>
-
-    </View>
-  )
-}
-function ChatItem({ item }) {
-  const validarImage = () => {
-    if (item.type === 'receive') {
-      return (
-        <View style={[styles.chatItemCommon, styles.receive]}>
-          <Image source={imagemIA} />
-          <Text style={styles.msgtxt_receive}>{item.text}</Text>
-        </View>
-      );
-    } else {
-      return (
-        <View style={[styles.chatItemCommon, styles.send]}>
-          <Text style={styles.msgtxt_send}>{item.text}</Text>
-        </View>
-      );
-    }
+    setMessages([...messages, newMessage]);
+    setInputMessage("");
   };
 
   return (
-    <View>
-      {validarImage()}
+    <View style={{flex:1}}>
+      <View><Text>Bem vindo ao Chat de Suporte</Text></View>
+      <View style={styles.container}>
+        <FlatList
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.messageContainer}>
+              <Text style={styles.messageText}>{respostaApiGPT}</Text>
+              <Text style={styles.timestampText}>{item.timestamp}</Text>
+            </View>
+          )}
+        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite sua mensagem aqui..."
+            value={inputMessage}
+            onChangeText={(text) => setInputMessage(text)}
+          />
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={handleSendMessage}
+          >
+            <Text style={styles.sendButtonText}>Enviar</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
+      
   );
-}
-
-
-
-const ChatItemMemo = memo(ChatItem, () => true)
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    padding: 16,
   },
-
-  topo: {
-    backgroundColor: '#ef4023',
-    borderBottomEndRadius: 250,
-    borderBottomStartRadius: 250,
+  messageContainer: {
+    backgroundColor: "#E5E5E5",
+    padding: 8,
+    borderRadius: 8,
+    marginVertical: 4,
+  },
+  messageText: {
+    fontSize: 16,
+  },
+  timestampText: {
+    fontSize: 12,
+    color: "gray",
+  },
+  inputContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 0
-  },
-
-  bottomText: {
-    padding: 15,
-    borderRadius: 32,
-    margin: 10,
-    backgroundColor: '#ef4023',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-  },
-
-  bottom: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    marginTop: 16,
   },
   input: {
-    color:"gray",
-    fontSize:12,
-    flex: 2,
-    margin: 10,
-    padding: 0,
-    fontSize: 18,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: "#fff",
-    borderRadius: 20
+    flex: 1,
+    backgroundColor: "#F0F0F0",
+    borderRadius: 20,
+    padding: 12,
   },
-  chatItemCommon: {
-    marginBottom: 2
+  sendButton: {
+    backgroundColor: "#007AFF",
+    borderRadius: 20,
+    padding: 12,
+    marginLeft: 8,
   },
-  send: {
-    alignSelf: 'flex-end',
-    marginTop: 15,
+  sendButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
-  receive: {
-    alignSelf: 'flex-start',
-  },
-  msgtxt_send: {
-    backgroundColor: '#ef4023',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    maxWidth: '75%'
-  },
-  msgtxt_receive: {
-    backgroundColor: 'lightgrey',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    maxWidth: '75%'
-  },
-  listStyle: {
-    paddingHorizontal: 10,
-    paddingBottom: 20
-  }
-})
+});
+
+export default ChatScreen;
