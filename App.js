@@ -22,18 +22,18 @@ const api = axios.create({
   baseURL: "https://databs-b6b35-default-rtdb.firebaseio.com",
 });
 
-const MenuScreen = () => {
-  return (
-    <View style={{ flex: 1 }}>
-      <NavigationContainer independent={true}>
-        <Tab.Navigator>
-          <Tab.Screen name="ChatBot" component={ChatScreen} />
-          <Tab.Screen name="Menu" component={Menu} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </View>
-  );
-};
+// const MenuScreen = () => {
+//   return (
+//     <View style={{ flex: 1 }}>
+//       <NavigationContainer independent={true}>
+//         <Tab.Navigator>
+//           <Tab.Screen name="ChatBot" component={ChatScreen} />
+//           <Tab.Screen name="Menu" component={Menu} />
+//         </Tab.Navigator>
+//       </NavigationContainer>
+//     </View>
+//   );
+// };
 export default function App({ navigation }) {
   const [lista, setLista] = useState([]);
   const salvar = (obj) => {
@@ -85,10 +85,9 @@ export default function App({ navigation }) {
       <View style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home" component={ChatScreen} />
             <Stack.Screen name="Cadastrar" component={RegisterScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Menu" component={MenuScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

@@ -1,148 +1,133 @@
-import React, { memo, useEffect, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+// import React, { useState } from 'react';
+// import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+// import { respostaApiGPT } from '../components/apiGPT';
 
-import imagemIA from '../../assets/IconIa.png';
-import seta from '../../assets/seta.png';
-import { AntDesign } from '@expo/vector-icons';
+// const App = () => {
+//   const [messages, setMessages] = useState([]);
+//   const [inputMessage, setInputMessage] = useState('');
 
-export default function Chat() {
-  const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState('');
-  useEffect(() => {
-    setTimeout(() => 
-    setMessages(msgs => 
-      ([{ 
-        id: new Date().getTime(),
-        type: 'receive',
-        text: 'Olá, como podemos te ajudar?' }, ...msgs])), 1000);
-  }, [])
-  const sendMsg = () => { 
-    setMessages([{ 
-      id: new Date().getTime(), 
-      type: 'send', text: message }, ...messages]); setMessage('') };
-    //Linha para testar a reposta
+//   const getBotResponse = async () => {
+//     if (inputMessage.trim() === '') return;
 
-  const receiveMsg = () => { 
-    setMessages([{ id: new Date().getTime(),
-       type: 'receive', 
-       text: message }, ...messages]); setMessage('') };
-  return (
-    <View style={styles.container}>
+//     try {
+//       const botMessage = await respostaApiGPT(inputMessage);
 
-      <View className="topo" style={styles.topo}><Image source={seta} /></View>
-      <FlatList data={messages} keyExtractor={x => x.id} renderItem={({ item, index }) => <ChatItemMemo {...{ item, index }} />} inverted contentContainerStyle={styles.listStyle} />
-      <View style={styles.bottom}>
+//       if (botMessage) {
+//         // Adicione as mensagens do usuário e do bot ao estado `messages`
+//         setMessages([...messages, { text: inputMessage, isSent: true }]);
+//         setMessages([...messages, { text: botMessage, isSent: false }]);
+//         setInputMessage('');
+//       }
+//     } catch (error) {
+//       console.error('Erro na chamada da API GPT-3:', error);
+//     }
+//   };
 
-        <TextInput style={styles.input} value={message} placeholder='Type your message' onChangeText={setMessage} />
-        <TouchableOpacity style={styles.button} onPress={sendMsg} disabled={message.length === 0}>
-          <Text style={styles.bottomText}><AntDesign name="right" size={24} color="black" /></Text>
-        </TouchableOpacity>
-      </View>
+//   return (
+//     <View style={{ flex: 1, padding: 16 }}>
+//       <FlatList
+//         data={messages}
+//         keyExtractor={(item, index) => index.toString()}
+//         renderItem={({ item }) => (
+//           <View style={{ alignSelf: item.isSent ? 'flex-end' : 'flex-start' }}>
+//             <View
+//               style={{
+//                 backgroundColor: item.isSent ? '#4CAF50' : '#007AFF',
+//                 padding: 10,
+//                 borderRadius: 10,
+//                 margin: 5,
+//                 maxWidth: '60%',
+//                 alignSelf: item.isSent ? 'flex-end' : 'flex-start',
+//               }}
+//             >
+//               <Text style={{ color: 'white' }}>{item.text}</Text>
+//             </View>
+//           </View>
+//         )}
+//       />
+//       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//         <TextInput
+//           style={{ flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 5, padding: 8 }}
+//           placeholder="Digite uma mensagem"
+//           value={inputMessage}
+//           onChangeText={(text) => setInputMessage(text)}
+//         />
+//         <TouchableOpacity onPress={getBotResponse} style={{ backgroundColor: '#007AFF', padding: 8, borderRadius: 5, marginLeft: 8 }}>
+//           <Text style={{ color: 'white' }}>Enviar</Text>
+//         </TouchableOpacity>
+//       </View>
+//     </View>
+//   );
+// };
 
-    </View>
-  )
-}
-function ChatItem({ item }) {
-  const validarImage = () => {
-    if (item.type === 'receive') {
-      return (
-        <View style={[styles.chatItemCommon, styles.receive]}>
-          <Image source={imagemIA} />
-          <Text style={styles.msgtxt_receive}>{item.text}</Text>
-        </View>
-      );
-    } else {
-      return (
-        <View style={[styles.chatItemCommon, styles.send]}>
-          <Text style={styles.msgtxt_send}>{item.text}</Text>
-        </View>
-      );
+// export default App;
+
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { respostaApiGPT } from '../components/apiGPT';
+
+const App = () => {
+  const [messagesBot, setMessagesBot] = useState([])
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
+
+  const sendMessage =async () => {
+
+
+    
+    if (inputMessage.trim() === '') return;
+    setMessages([...messages, { text: inputMessage, isSent: true }]);
+    setInputMessage('');
+    
+    
+    try {
+      const botMessage = await respostaApiGPT(inputMessage);
+
+      if (botMessage) {
+        setMessages([...messages, { text: botMessage, isSent: false }]);
+      }
+    } catch (error) {
+      console.error('Erro na chamada da API GPT-3:', error);
     }
   };
 
+
   return (
-    <View>
-      {validarImage()}
+    <View style={{ flex: 1, padding: 16 }}>
+      <FlatList
+        data={messages}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={{ alignSelf: item.isSent ? 'flex-end' : 'flex-start' }}>
+            <View
+              style={{
+                backgroundColor: item.isSent ? '#4CAF50' : '#007AFF',
+                padding: 10,
+                borderRadius: 10,
+                margin: 5,
+                maxWidth: '60%',
+                alignSelf: item.isSent ? 'flex-end' : 'flex-start',
+              }}
+            >
+              <Text style={{ color: 'white' }}>{item.text}</Text>
+            </View>
+          </View>
+        )}
+      />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TextInput
+          style={{ flex: 1, borderWidth: 1, borderColor: '#ccc', borderRadius: 5, padding: 8 }}
+          placeholder="Digite uma mensagem"
+          value={inputMessage}
+          onChangeText={(text) => setInputMessage(text)}
+        />
+        <TouchableOpacity onPress={sendMessage} style={{ backgroundColor: '#007AFF', padding: 8, borderRadius: 5, marginLeft: 8 }}>
+          <Text style={{ color: 'white' }}>Enviar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
-}
+};
 
+export default App;
 
-
-const ChatItemMemo = memo(ChatItem, (prevProps, nextProps) => true)
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-
-  topo: {
-    backgroundColor: '#ef4023',
-    borderBottomEndRadius: 250,
-    borderBottomStartRadius: 250,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 0
-  },
-
-  bottomText: {
-    padding: 15,
-    borderRadius: 32,
-    margin: 10,
-    backgroundColor: '#ef4023',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-  },
-
-  bottom: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  input: {
-    flex: 2,
-    margin: 10,
-    padding: 0,
-    fontSize: 18,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: "#ef4023",
-    borderRadius: 20
-  },
-  chatItemCommon: {
-    marginBottom: 2
-  },
-  send: {
-    alignSelf: 'flex-end',
-    marginTop: 15,
-  },
-  receive: {
-    alignSelf: 'flex-start',
-  },
-  msgtxt_send: {
-    backgroundColor: '#ef4023',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    maxWidth: '75%'
-  },
-  msgtxt_receive: {
-    backgroundColor: 'lightgrey',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 10,
-    maxWidth: '75%'
-  },
-  listStyle: {
-    paddingHorizontal: 10,
-    paddingBottom: 20
-  }
-})
