@@ -85,7 +85,7 @@ export default function App({ navigation }) {
       <View style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={ChatScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Cadastrar" component={RegisterScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
           </Stack.Navigator>
