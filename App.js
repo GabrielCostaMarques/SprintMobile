@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import axios from "axios";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 // Importe de Funções e componente
 import { Contexto } from "./src/components/contexto";
@@ -22,18 +23,49 @@ const api = axios.create({
   baseURL: "https://databs-b6b35-default-rtdb.firebaseio.com",
 });
 
-// const MenuScreen = () => {
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <NavigationContainer independent={true}>
-//         <Tab.Navigator>
-//           <Tab.Screen name="ChatBot" component={ChatScreen} />
-//           <Tab.Screen name="Menu" component={Menu} />
-//         </Tab.Navigator>
-//       </NavigationContainer>
-//     </View>
-//   );
-// };
+const MenuScreen = () => {
+  return (
+    <View style={{ flex: 1 }}>
+      <NavigationContainer independent={true}>
+        <Tab.Navigator>
+          <Tab.Screen name="ChatBot" component={ChatScreen} 
+          
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View>
+                  <Ionicons
+                    name="chatbox"
+                    size={22}
+                    color="green"
+                  />
+                </View>
+              );
+            },
+          }}
+          />
+          <Tab.Screen
+            name="Menu"
+            component={Menu}
+            options={{
+              tabBarIcon: ({ focused }) => {
+                return (
+                  <View>
+                    <Ionicons
+                      name="menu"
+                      size={22}
+                      color="darkorange"
+                    />
+                  </View>
+                );
+              },
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </View>
+  );
+};
 export default function App({ navigation }) {
   const [lista, setLista] = useState([]);
   const salvar = (obj) => {
@@ -85,9 +117,10 @@ export default function App({ navigation }) {
       <View style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Home" component={ChatScreen} />
             <Stack.Screen name="Cadastrar" component={RegisterScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="‎" component={MenuScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
