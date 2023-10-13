@@ -115,8 +115,8 @@ const SignIn = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          validacaoCampos.validate({data})
-          .then(()=>{})
+          // validacaoCampos.validate({data})
+          // .then(()=>{})
           navigation.navigate("Login")}}
         style={{ marginVertical: 20 }}
       >
