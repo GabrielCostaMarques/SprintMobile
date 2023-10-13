@@ -46,17 +46,22 @@ const SignIn = ({ navigation }) => {
     api
       .post(`${API_URL}usuarios/cadastrar`, obj)
       .then((response) => {
-        console.log("Cadastro realizado com sucesso!");
-        onSucess(`${response.data}`);
-        navigation.navigate("Login");
+        onSucess(`Cadastro realizado com sucesso!`);
+        contexto.id = response.data
+        setTimeout(() => {
+          navigation.navigate("Login");  
+        }, 1000);
+        // navigation.navigate("Login");
       })
       .catch((error) => {
-        if (typeof(error.response.data) == "object") {
-          let objErrors = error.response.data
-          let msgErroTratada = objErrors.errors.map(msg => msg.defaultMessage)[0]
-          onError(msgErroTratada);  
-        }else{
-          onError(error.response.data);  
+        if (typeof error.response.data == "object") {
+          let objErrors = error.response.data;
+          let msgErroTratada = objErrors.errors.map(
+            (msg) => msg.defaultMessage
+          )[0];
+          onError(msgErroTratada);
+        } else {
+          onError(error.response.data);
         }
       });
   };
@@ -91,12 +96,18 @@ const SignIn = ({ navigation }) => {
         onPress={() => {
           const obj = { nome, email, senha };
           cadastrarUsuario(obj);
-          // contexto.cadastrar(obj);
-          // navigation.navigate('Login')
         }}
       >
         <View style={style.btnCadastrar}>
           <Text style={style.btnText}>Cadastre-se</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Login")}
+        style={{ marginVertical: 20 }}
+      >
+        <View style={style.btnCadastrar}>
+          <Text style={style.btnText}>Já Tenho Conta</Text>
         </View>
       </TouchableOpacity>
     </View>
