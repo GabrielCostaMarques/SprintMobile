@@ -19,21 +19,17 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await api.post(`${API_URL}usuarios/login`, {
+     let resp =  await api.post(`${API_URL}usuarios/login`, {
         email,
         senha,
       });
-
-      if (response.status === 200) {
-        contexto.salvar(response.data);
-        onSucess(`${response.data}`);
-        navigation.navigate("Menu");
-      } else {
-        onError(`${error.message}` ?? `Credenciais inválidas`);
-      }
+      contexto.id = resp.data.id
+      onSucess(`Login com Sucesso!`);
+      navigation.navigate("‎");
+      
     } catch (error) {
-      onError(`${error.message}` ?? `Falha no login. Verifique suas credenciais!!`);
-      console.log(JSON.stringify(error))
+      onError(`${error.response.data}` ?? `Falha no login. Verifique suas credenciais!!`);
+      console.log(JSON.stringify(error.message));
     }
   };
 

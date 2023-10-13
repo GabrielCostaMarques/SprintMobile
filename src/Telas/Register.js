@@ -9,6 +9,7 @@ import { Contexto } from "../components/contexto";
 import { useContext, useState } from "react";
 import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
+import {object,string} from "yup"
 
 const Lista = () => {
   const contexto = useContext(Contexto);
@@ -35,6 +36,10 @@ const SignIn = ({ navigation }) => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [erronome, setErroNome] = useState("");
+  const [erroemail, setErroEmail] = useState("");
+  const [errosenha, setErroSenha] = useState("");
+
 
   const obj = {
     nome: nome,
@@ -46,20 +51,31 @@ const SignIn = ({ navigation }) => {
     api
       .post(`${API_URL}usuarios/cadastrar`, obj)
       .then((response) => {
-        console.log("Cadastro realizado com sucesso!");
-        onSucess(`${response.data}`);
-        navigation.navigate("Login");
+        onSucess(`Cadastro realizado com sucesso!`);
+        contexto.id = response.data
+        setTimeout(() => {
+          navigation.navigate("Login");  
+        }, 1000);
+        // navigation.navigate("Login");
       })
       .catch((error) => {
-        if (typeof(error.response.data) == "object") {
-          let objErrors = error.response.data
-          let msgErroTratada = objErrors.errors.map(msg => msg.defaultMessage)[0]
-          onError(msgErroTratada);  
-        }else{
-          onError(error.response.data);  
+        if (typeof error.response.data == "object") {
+          let objErrors = error.response.data;
+          let msgErroTratada = objErrors.errors.map(
+            (msg) => msg.defaultMessage
+          )[0];
+          onError(msgErroTratada);
+        } else {
+          onError(error.response.data);
         }
       });
   };
+
+  const validacaoCampos = object({ 
+    nome: string().required(),
+    email:string().email().required(),
+    senha: string().required()
+  })
 
   return (
     <View style={style.body}>
@@ -91,12 +107,21 @@ const SignIn = ({ navigation }) => {
         onPress={() => {
           const obj = { nome, email, senha };
           cadastrarUsuario(obj);
-          // contexto.cadastrar(obj);
-          // navigation.navigate('Login')
         }}
       >
         <View style={style.btnCadastrar}>
           <Text style={style.btnText}>Cadastre-se</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          // validacaoCampos.validate({data})
+          // .then(()=>{})
+          navigation.navigate("Login")}}
+        style={{ marginVertical: 20 }}
+      >
+        <View style={style.btnCadastrar}>
+          <Text style={style.btnText}>Já Tenho Conta</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -111,7 +136,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ef4023",
+    backgroundColor: "#ee5e5e5",
     padding: 20,
   },
 
@@ -129,8 +154,9 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     letterSpacing: 2,
-    color: "#fff",
+    color: "#000",
     marginTop: 20,
+    marginBottom: 20,
   },
 
   btnCadastrar: {
