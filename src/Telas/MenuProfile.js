@@ -1,25 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, Modal, Button, StyleSheet } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Modal,
+  Button,
+  StyleSheet,
+} from "react-native";
+import { Contexto } from "../components/contexto";
+import { api, API_URL } from "../api";
+import { onSucess, onError } from "../components/Toast";
 
 const UserProfile = () => {
+  useEffect(() => {
+    getUserInfos();
+  }, []);
+
+  const contexto = useContext(Contexto);
   const [userData, setUserData] = useState({
-    firstName: "John",
-    lastName: "Doe",
+    id:contexto.id,
+    nome: "John",
     email: "johndoe@example.com",
-    age: 30,
-    registrationDate: "01/01/2023",
+    dataCadastro: "01/01/2023",
   });
 
   const [editing, setEditing] = useState(false);
 
   const [editData, setEditData] = useState({
-    firstName: "",
-    lastName: "",
+    id:contexto.id,
+    nome: "",
     email: "",
-    age: "",
   });
 
   const [showModal, setShowModal] = useState(false);
+
+  const getUserInfos = () => {
+    try {
+      api.get(`${API_URL}usuarios/${contexto.id}`).then((resp) => {
+        setUserData(...resp.data);
+        onSucess(`Dados carregados com Sucesso!`);
+      });
+    } catch (error) {
+      onError(`Falha ao carregar os dados`);
+    }
+  };
 
   const handleEdit = () => {
     setEditData(userData);
@@ -28,7 +54,17 @@ const UserProfile = () => {
 
   const handleSave = () => {
     setEditing(false);
-    setUserData({ ...editData });
+    try {
+      api.put(`${API_URL}usuarios/${contexto.id}`,{...editData}).then((resp) => {
+        onSucess(`${resp.data}`);
+        setTimeout(() => {
+          getUserInfos()
+        }, 300);
+      });
+    } catch (error) {
+      onError(`Falha ao atualizar os dados`);
+    }
+    
     // axios.put usuarios
   };
 
@@ -45,35 +81,24 @@ const UserProfile = () => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../assets/user.png")}
-        style={styles.avatar}
-      />
+      <Image source={require("../../assets/user.png")} style={styles.avatar} />
       {editing ? (
         <View style={styles.editFields}>
           <TextInput
-            value={editData.firstName}
-            onChangeText={(text) => setEditData({ ...editData, firstName: text })}
-          />
-          <TextInput
-            value={editData.lastName}
-            onChangeText={(text) => setEditData({ ...editData, lastName: text })}
+            value={editData.nome}
+            onChangeText={(text) => setEditData({ ...editData, nome: text })}
           />
           <TextInput
             value={editData.email}
             onChangeText={(text) => setEditData({ ...editData, email: text })}
           />
-          <TextInput
-            value={editData.age.toString()}
-            onChangeText={(text) => setEditData({ ...editData, age: text })}
-          />
         </View>
       ) : (
         <View style={styles.userInfo}>
-          <Text>Name: {userData.firstName} {userData.lastName}</Text>
+          <Text>Nome: {userData.nome}</Text>
           <Text>Email: {userData.email}</Text>
-          <Text>Age: {userData.age}</Text>
-          <Text>Registration Date: {userData.registrationDate}</Text>
+          <Text>Data de Registro:{new Date(userData.dataCadastro).toLocaleDateString()}
+          </Text>
         </View>
       )}
       {editing ? (
@@ -91,10 +116,10 @@ const UserProfile = () => {
       <Modal visible={showModal} animationType="slide">
         <View style={styles.modalContent}>
           <Text>Tem certeza de que deseja desativar sua conta?</Text>
-          
-          <Button title="Sim, desativar" onPress={confirmDeactivateAccount}/>
-          
-          <Button title="Cancelar" onPress={() => setShowModal(false)}/>
+
+          <Button title="Sim, desativar" onPress={confirmDeactivateAccount} />
+
+          <Button title="Cancelar" onPress={() => setShowModal(false)} />
         </View>
       </Modal>
     </View>
@@ -132,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    gap:15
+    gap: 15,
   },
 });
 
