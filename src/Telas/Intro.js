@@ -3,18 +3,19 @@ import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native";
 
 import IconHome from "../../assets/IconHomeAnimation1.gif";
 import Arrow from "../../assets/arrow.png";
-import TypingAnimation from "../components/AnimationText"
+import TypingAnimation from "../components/AnimationText";
 
 const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.containerHome}>
         <Image style={styles.logo} source={IconHome} />
-        <Text style={styles.titulo}>Seja Bem - Vindo !</Text>
-        <TypingAnimation style={styles.subtitulo}
-          text="Somos a Byte Wizards. Aqui está uma prévia da ferramenta utilizando
-          ChatGPT"/>
-        
+        <Text style={styles.titulo}>Seja Bem Vindo !</Text>
+        <TypingAnimation
+          style={styles.subtitulo}
+          text="Somos a ByteWizards. Aqui está uma prévia da ferramenta utilizando
+          ChatGPT"
+        />
       </View>
 
       <View style={styles.containerButton}>
@@ -24,8 +25,10 @@ const Home = ({ navigation }) => {
             navigation.navigate("Cadastrar");
           }}
         >
-        <Text style={styles.btnNext}>Próximo</Text>
-        <Image source={Arrow}/>
+          <View style={styles.buttonContent}>
+            <Text style={styles.btnNext}>Próximo</Text>
+            <Image source={Arrow} style={styles.arrowImage} />
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -41,13 +44,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#e5e5e5",
     overflow: "hidden",
   },
-  
-  containerHome:{
+
+  containerHome: {
     flex: 8,
-    alignItems:"center",
-    justifyContent:"center"
+    alignItems: "center",
+    justifyContent: "center",
   },
-  
+
   logo: {
     marginBottom: 30,
     width: 360,
@@ -66,22 +69,34 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
 
-  button:{
-    backgroundColor:"#ef4023",
-    borderRadius:10,
-    padding:20,
-    marginTop:30,
-    
+  button: {
+    backgroundColor: "#ef4023",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    marginTop: 30,
   },
   btnNext: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
     lineHeight: 25,
-    color:"white"
+    color: "white",
   },
-  containerButton:{
+  containerButton: {
     flex: 2,
   },
-  
+  arrowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  arrowImage: {
+    width: 45,
+    height: 35,
+    marginLeft: 10,
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
