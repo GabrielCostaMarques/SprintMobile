@@ -41,7 +41,7 @@ const App = () => {
                 alignSelf: item.isSent ? "flex-end" : "flex-start",
               }}
             >
-              <Text style={{ color: "white" }}>{item.text}</Text>
+              <Text style={{ color: "white" }}>{`${item.isSent ?'👤:\t\n' :'🤖:\t\n'}${item.text}`}</Text>
             </View>
           </View>
         )}

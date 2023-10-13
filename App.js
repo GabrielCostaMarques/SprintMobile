@@ -29,7 +29,6 @@ const MenuScreen = () => {
       <NavigationContainer independent={true}>
         <Tab.Navigator>
           <Tab.Screen name="ChatBot" component={ChatScreen} 
-          
           options={{
             tabBarIcon: ({ focused }) => {
               return (
@@ -68,6 +67,7 @@ const MenuScreen = () => {
 };
 export default function App({ navigation }) {
   const [lista, setLista] = useState([]);
+  const [id,setId] = useState(0);
   const salvar = (obj) => {
     setLista([...lista, obj]);
   };
@@ -112,12 +112,13 @@ export default function App({ navigation }) {
         remover,
         salvar,
         lista,
+        id
       }}
     >
       <View style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={ChatScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Cadastrar" component={RegisterScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="‎" component={MenuScreen} />
