@@ -11,34 +11,32 @@ import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
 import {object,string} from "yup"
 
-const Lista = () => {
-  const contexto = useContext(Contexto);
-  return (
-    <View style={style.body}>
-      <Text style={style.titleInput}>Lista de Cadastros</Text>
+// const Lista = () => {
+//   const contexto = useContext(Contexto);
+//   return (
+//     <View style={style.body}>
+//       <Text style={style.titleInput}>Lista de Cadastros</Text>
 
-      <View key={index}>
-        <Text style={style.titleInput}>Nome: {usuario.nome}</Text>
-        <Text style={style.titleInput}>Email: {usuario.email}</Text>
-        <Text style={style.titleInput}>Senha: {usuario.senha}</Text>
-        <TouchableOpacity onPress={contexto.remover}>
-          <View style={style.btnLogin}>
-            <Text style={style.btnText}>Excluir Conta</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+//       <View key={index}>
+//         <Text style={style.titleInput}>Nome: {usuario.nome}</Text>
+//         <Text style={style.titleInput}>Email: {usuario.email}</Text>
+//         <Text style={style.titleInput}>Senha: {usuario.senha}</Text>
+//         <TouchableOpacity onPress={contexto.remover}>
+//           <View style={style.btnLogin}>
+//             <Text style={style.btnText}>Excluir Conta</Text>
+//           </View>
+//         </TouchableOpacity>
+//       </View>
+//     </View>
+//   );
+// };
 
 const SignIn = ({ navigation }) => {
   const contexto = useContext(Contexto);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [erronome, setErroNome] = useState("");
-  const [erroemail, setErroEmail] = useState("");
-  const [errosenha, setErroSenha] = useState("");
+  const [erro, setErro]= useState("")
 
 
   const obj = {
@@ -72,14 +70,14 @@ const SignIn = ({ navigation }) => {
   };
 
   const validacaoCampos = object({ 
-    nome: string().required(),
-    email:string().email().required(),
-    senha: string().required()
+    nome: string().required("Campo Obrigatório").min((3),"Campo com minímo de 3 caracteres").max((50),"Campo com máximo de 50 caracteres"),
+    email:string().email("Email Inválido").required("Campo Obrigatório"),
+    senha: string().required("Campo Obrigatório").min((4),"Campo com minímo de 4 caracteres")
   })
 
   return (
     <View style={style.body}>
-      <Text style={style.btnText}>Cadastre-se agora mesmo!</Text>
+      <Text style={style.title}>Cadastre-se agora mesmo!</Text>
 
       <TextInput
         style={style.input}
@@ -88,12 +86,14 @@ const SignIn = ({ navigation }) => {
         onChangeText={setNome}
         minLength={1}
       />
+        <Text style={style.msgErro}>{erro.nome}</Text>
       <TextInput
         style={style.input}
         placeholder="Digite seu Email"
         value={email}
         onChangeText={setEmail}
       />
+        <Text style={style.msgErro}>{erro.email}</Text>
       <TextInput
         placeholder="Digite sua Senha"
         style={style.input}
@@ -101,6 +101,7 @@ const SignIn = ({ navigation }) => {
         value={senha}
         onChangeText={setSenha}
       />
+      <Text style={style.msgErro}>{erro.senha}</Text>
 
       <TouchableOpacity
         value="Cadastrar"
@@ -115,9 +116,27 @@ const SignIn = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          validacaoCampos.validate({data})
-          .then(()=>{})
-          navigation.navigate("Login")}}
+          const campos ={nome,email,senha}
+
+          validacaoCampos.validate(campos,{abortEarly:false})
+          .then(()=>{ 
+            setErro({nome:"",email:"",senha:""})
+            navigation.navigate("Login")
+            
+          })
+          .catch((erro) => {
+            const validationErrors = {};
+            erro.inner.forEach((e) => {
+              validationErrors[e.path] = e.message;
+            });
+            setErro(validationErrors);
+            
+          });
+          
+        }
+        
+        }
+
         style={{ marginVertical: 20 }}
       >
         <View style={style.btnCadastrar}>
@@ -140,6 +159,12 @@ const style = StyleSheet.create({
     padding: 20,
   },
 
+  title:{
+    color:"black",
+    fontSize:30,
+    fontWeight:"bold"
+  },
+
   input: {
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -154,13 +179,20 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     letterSpacing: 2,
-    color: "#000",
+    color: "black",
     marginTop: 20,
     marginBottom: 20,
   },
 
+  msgErro:{
+    fontSize: 11, 
+    color: "red", 
+    fontWeight: "bold" 
+  },
+  
   btnCadastrar: {
-    fontSize: 30,
+    fontWeight: "bold" ,
+    fontSize: 20,
     backgroundColor: "#ef4023",
     position: "relative",
     top: 60,
@@ -171,7 +203,10 @@ const style = StyleSheet.create({
     borderWidth: 2,
   },
   btnText: {
-    fontSize: 30,
-    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    lineHeight: 25,
+    color:"white"
   },
 });
