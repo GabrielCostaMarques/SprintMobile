@@ -13,7 +13,7 @@ import { Contexto } from "../components/contexto";
 import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
 
-const UserProfile = () => {
+const UserProfile = ({navigation}) => {
   useEffect(() => {
     getUserInfos();
   }, []);
@@ -117,7 +117,7 @@ const UserProfile = () => {
         <View style={styles.modalContent}>
           <Text>Tem certeza de que deseja desativar sua conta?</Text>
 
-          <Button title="Sim, desativar" onPress={confirmDeactivateAccount} />
+          <Button title="Sim, desativar" onPress={()=>{confirmDeactivateAccount, navigation.navigate("Home")}} />
 
           <Button title="Cancelar" onPress={() => setShowModal(false)} />
         </View>
