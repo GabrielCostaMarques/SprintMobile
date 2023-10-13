@@ -5,56 +5,43 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { Contexto } from "../components/contexto";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
 import {object,string} from "yup"
 
-// const Lista = () => {
-//   const contexto = useContext(Contexto);
-//   return (
-//     <View style={style.body}>
-//       <Text style={style.titleInput}>Lista de Cadastros</Text>
-
-//       <View key={index}>
-//         <Text style={style.titleInput}>Nome: {usuario.nome}</Text>
-//         <Text style={style.titleInput}>Email: {usuario.email}</Text>
-//         <Text style={style.titleInput}>Senha: {usuario.senha}</Text>
-//         <TouchableOpacity onPress={contexto.remover}>
-//           <View style={style.btnLogin}>
-//             <Text style={style.btnText}>Excluir Conta</Text>
-//           </View>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
-
 const SignIn = ({ navigation }) => {
-  const contexto = useContext(Contexto);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro]= useState("")
 
-
-  const obj = {
-    nome: nome,
-    email: email,
-    senha: senha,
-  };
+  const validarCampos = () => {
+    const campos ={nome,email,senha}
+    validacaoCampos.validate(campos,{abortEarly:false})
+    .then(()=>{
+      setErro({nome:"",email:"",senha:""})
+      const obj = { nome, email, senha };
+      cadastrarUsuario(obj)
+    })
+    .catch((erro) => {
+      const validationErrors = {};
+      erro.inner.forEach((e) => {
+        validationErrors[e.path] = e.message;
+      });
+      setErro(validationErrors);
+      return false
+    });
+  }
 
   const cadastrarUsuario = (obj) => {
     api
       .post(`${API_URL}usuarios/cadastrar`, obj)
-      .then((response) => {
+      .then(() => {
         onSucess(`Cadastro realizado com sucesso!`);
-        contexto.id = response.data
         setTimeout(() => {
           navigation.navigate("Login");  
-        }, 1000);
-        // navigation.navigate("Login");
+        }, 900);
       })
       .catch((error) => {
         if (typeof error.response.data == "object") {
@@ -62,7 +49,7 @@ const SignIn = ({ navigation }) => {
           let msgErroTratada = objErrors.errors.map(
             (msg) => msg.defaultMessage
           )[0];
-          onError(msgErroTratada);
+          onError(`${msgErroTratada}`);
         } else {
           onError(error.response.data);
         }
@@ -105,38 +92,15 @@ const SignIn = ({ navigation }) => {
 
       <TouchableOpacity
         value="Cadastrar"
-        onPress={() => {
-          const obj = { nome, email, senha };
-          cadastrarUsuario(obj);
-        }}
+        onPress={() => {validarCampos()}}
       >
         <View style={style.btnCadastrar}>
           <Text style={style.btnText}>Cadastre-se</Text>
         </View>
       </TouchableOpacity>
+      <Text>{"\n"}</Text>
       <TouchableOpacity
-        onPress={() => {
-          const campos ={nome,email,senha}
-
-          validacaoCampos.validate(campos,{abortEarly:false})
-          .then(()=>{ 
-            setErro({nome:"",email:"",senha:""})
-            navigation.navigate("Login")
-            
-          })
-          .catch((erro) => {
-            const validationErrors = {};
-            erro.inner.forEach((e) => {
-              validationErrors[e.path] = e.message;
-            });
-            setErro(validationErrors);
-            
-          });
-          
-        }
-        
-        }
-
+        onPress={() => navigation.navigate("Login")}
         style={{ marginVertical: 20 }}
       >
         <View style={style.btnCadastrar}>
