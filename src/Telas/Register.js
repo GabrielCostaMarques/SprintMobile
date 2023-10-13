@@ -9,6 +9,7 @@ import { Contexto } from "../components/contexto";
 import { useContext, useState } from "react";
 import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
+import {object,string} from "yup"
 
 const Lista = () => {
   const contexto = useContext(Contexto);
@@ -35,6 +36,10 @@ const SignIn = ({ navigation }) => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [erronome, setErroNome] = useState("");
+  const [erroemail, setErroEmail] = useState("");
+  const [errosenha, setErroSenha] = useState("");
+
 
   const obj = {
     nome: nome,
@@ -65,6 +70,12 @@ const SignIn = ({ navigation }) => {
         }
       });
   };
+
+  const validacaoCampos = object({ 
+    nome: string().required(),
+    email:string().email().required(),
+    senha: string().required()
+  })
 
   return (
     <View style={style.body}>
@@ -103,7 +114,10 @@ const SignIn = ({ navigation }) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => {
+          validacaoCampos.validate({data})
+          .then(()=>{})
+          navigation.navigate("Login")}}
         style={{ marginVertical: 20 }}
       >
         <View style={style.btnCadastrar}>
@@ -122,7 +136,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ef4023",
+    backgroundColor: "#ee5e5e5",
     padding: 20,
   },
 
@@ -140,8 +154,9 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     letterSpacing: 2,
-    color: "#fff",
+    color: "#000",
     marginTop: 20,
+    marginBottom: 20,
   },
 
   btnCadastrar: {
