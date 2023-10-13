@@ -19,16 +19,16 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     try {
-      await api.post(`${API_URL}usuarios/login`, {
+     let resp =  await api.post(`${API_URL}usuarios/login`, {
         email,
         senha,
       });
-
+      contexto.id = resp.data.id
       onSucess(`Login com Sucesso!`);
       navigation.navigate("‎");
       
     } catch (error) {
-      onError(`${error.response.data}` ??`Falha no login. Verifique suas credenciais!!`);
+      onError(`${error.response.data}` ?? `Falha no login. Verifique suas credenciais!!`);
       console.log(JSON.stringify(error.message));
     }
   };
