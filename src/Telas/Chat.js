@@ -34,7 +34,7 @@ const App = () => {
     <DrawerLayoutAndroid
       ref={drawerRef}
       drawerLockMode='locked-closed'
-      drawerWidth={200}
+      drawerWidth={300}
       drawerPosition="top"
       renderNavigationView={() => (
         <View style={{ flex: 1, backgroundColor: "#fff" }}>
