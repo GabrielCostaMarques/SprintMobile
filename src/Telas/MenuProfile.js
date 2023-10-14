@@ -12,8 +12,10 @@ import {
 import { Contexto } from "../components/contexto";
 import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
+import { useNavigation } from '@react-navigation/native';
 
 const UserProfile = () => {
+  const navigation = useNavigation();
   useEffect(() => {
     getUserInfos();
   }, []);
@@ -76,6 +78,7 @@ const UserProfile = () => {
     //todo
     //axios.delete
     setShowModal(false);
+    navigation.navigate("Login");
     //redirect p/home
   };
 
