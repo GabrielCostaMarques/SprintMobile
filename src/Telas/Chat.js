@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, DrawerLayoutAndroid } from "react-native";
 import { respostaApiGPT } from "../components/apiGPT";
+import Menu from "../Telas/MenuProfile";
 
 const App = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
+  const drawerRef = React.createRef();
 
   const sendMessage = async () => {
     if (inputMessage.trim() === "") return;
@@ -24,54 +26,77 @@ const App = () => {
     }
   };
 
+  const openDrawer = () => {
+    drawerRef.current.openDrawer();
+  };
+
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <FlatList
-        data={messages}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={{ alignSelf: item.isSent ? "flex-end" : "flex-start" }}>
-            <View
-              style={{
-                backgroundColor: item.isSent ? "#4CAF50" : "#007AFF",
-                padding: 10,
-                borderRadius: 10,
-                margin: 5,
-                maxWidth: "60%",
-                alignSelf: item.isSent ? "flex-end" : "flex-start",
-              }}
-            >
-              <Text style={{ color: "white" }}>{`${item.isSent ?'👤:\t\n' :'🤖:\t\n'}${item.text}`}</Text>
-            </View>
-          </View>
-        )}
-      />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TextInput
-          style={{
-            flex: 1,
-            borderWidth: 1,
-            borderColor: "#ccc",
-            borderRadius: 5,
-            padding: 8,
-          }}
-          placeholder="Digite uma mensagem"
-          value={inputMessage}
-          onChangeText={(text) => setInputMessage(text)}
-        />
-        <TouchableOpacity
-          onPress={sendMessage}
-          style={{
-            backgroundColor: "#007AFF",
-            padding: 8,
-            borderRadius: 5,
-            marginLeft: 8,
-          }}
-        >
-          <Text style={{ color: "white" }}>Enviar</Text>
+    <DrawerLayoutAndroid
+      ref={drawerRef}
+      drawerLockMode='locked-closed'
+      drawerWidth={200}
+      drawerPosition="top"
+      renderNavigationView={() => (
+        <View style={{ flex: 1, backgroundColor: "#fff" }}>
+          <Menu/>
+        </View>
+      )}
+    >
+      <View style={{ flex: 1 }}>
+        <TouchableOpacity onPress={openDrawer}>
+          <Text style={{ fontSize: 24, padding: 16 }}>☰ Menu</Text>
         </TouchableOpacity>
+
+        <FlatList
+          data={messages}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={{ alignSelf: item.isSent ? "flex-end" : "flex-start" }}>
+              <View
+                style={{
+                  backgroundColor: item.isSent ? "#4CAF50" : "#007AFF",
+                  padding: 10,
+                  borderRadius: 10,
+                  margin: 5,
+                  maxWidth: "60%",
+                  alignSelf: item.isSent ? "flex-end" : "flex-start",
+                }}
+              >
+                <Text style={{ color: "white" }}>
+                  {`${item.isSent ? '👤:\t\n' : '🤖:\t\n'}${item.text}`}
+                </Text>
+              </View>
+            </View>
+          )}
+        />
+
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TextInput
+            style={{
+              flex: 1,
+              borderWidth: 1,
+              borderColor: "#ccc",
+              borderRadius: 5,
+              padding: 8,
+            }}
+            placeholder="Digite uma mensagem"
+            value={inputMessage}
+            onChangeText={(text) => setInputMessage(text)}
+          />
+          <TouchableOpacity
+            onPress={sendMessage}
+            style={{
+              backgroundColor: "#007AFF",
+              padding: 8,
+              borderRadius: 5,
+              marginLeft: 8,
+            }}
+          >
+            <Text style={{ color: "white" }}>Enviar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </DrawerLayoutAndroid>
   );
 };
 
