@@ -12,8 +12,10 @@ import {
 import { Contexto } from "../components/contexto";
 import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
+import { useNavigation } from '@react-navigation/native';
 
 const UserProfile = () => {
+  const navigation = useNavigation();
   useEffect(() => {
     getUserInfos();
   }, []);
@@ -40,7 +42,6 @@ const UserProfile = () => {
     try {
       api.get(`${API_URL}usuarios/${contexto.id}`).then((resp) => {
         setUserData(...resp.data);
-        onSucess(`Dados carregados com Sucesso!`);
       });
     } catch (error) {
       onError(`Falha ao carregar os dados`);
@@ -64,8 +65,6 @@ const UserProfile = () => {
     } catch (error) {
       onError(`Falha ao atualizar os dados`);
     }
-    
-    // axios.put usuarios
   };
 
   const handleDeactivateAccount = () => {
@@ -73,10 +72,17 @@ const UserProfile = () => {
   };
 
   const confirmDeactivateAccount = () => {
-    //todo
-    //axios.delete
+    try {
+      api.delete(`${API_URL}usuarios/${contexto.id}`).then((resp) => {
+        onSucess(`${resp.data}!`);
+        setTimeout(() => {
+          navigation.navigate("Login");  
+        }, 800);
+      });
+    } catch (error) {
+      onError(`Falha ao desativar a conta`);
+    }
     setShowModal(false);
-    //redirect p/home
   };
 
   return (
@@ -110,14 +116,16 @@ const UserProfile = () => {
         style={styles.deactivateButton}
         onPress={handleDeactivateAccount}
       >
-        <Text style={styles.buttonText}>Desativar minha conta</Text>
+        <Text style={styles.buttonText}>Remover minha conta</Text>
       </TouchableOpacity>
 
       <Modal visible={showModal} animationType="slide">
         <View style={styles.modalContent}>
-          <Text>Tem certeza de que deseja desativar sua conta?</Text>
+          <Text>Tem certeza de que deseja remover sua conta?</Text>
 
-          <Button title="Sim, desativar" onPress={confirmDeactivateAccount} />
+          <TouchableOpacity style={styles.deactivateButton} onPress={confirmDeactivateAccount}>
+            <Text style={styles.buttonText}>Sim, remover</Text>
+          </TouchableOpacity>
 
           <Button title="Cancelar" onPress={() => setShowModal(false)} />
         </View>
