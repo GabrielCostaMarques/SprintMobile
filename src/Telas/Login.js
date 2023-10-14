@@ -14,6 +14,7 @@ import { api, API_URL } from "../api";
 import { onSucess, onError } from "../components/Toast";
 
 const Login = ({ navigation }) => {
+  const contexto = useContext(Contexto);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
