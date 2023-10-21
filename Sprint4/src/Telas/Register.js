@@ -7,7 +7,8 @@ import {
 } from "react-native";
 import { Contexto } from "../components/contexto";
 import { useContext, useState } from "react";
-
+import { api, API_URL } from "../api";
+import { onSucess, onError } from "../components/Toast";
 
 const Lista = () => {
   const contexto = useContext(Contexto);
@@ -29,11 +30,37 @@ const Lista = () => {
   );
 };
 
-const SignIn=({navigation})=> {
+const SignIn = ({ navigation }) => {
   const contexto = useContext(Contexto);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  const obj = {
+    nome: nome,
+    email: email,
+    senha: senha,
+  };
+
+  const cadastrarUsuario = (obj) => {
+    api
+      .post(`${API_URL}usuarios/cadastrar`, obj)
+      .then((response) => {
+        console.log("Cadastro realizado com sucesso!");
+        onSucess(`${response.data}`);
+        navigation.navigate("Login");
+      })
+      .catch((error) => {
+        if (typeof(error.response.data) == "object") {
+          let objErrors = error.response.data
+          let msgErroTratada = objErrors.errors.map(msg => msg.defaultMessage)[0]
+          onError(msgErroTratada);  
+        }else{
+          onError(error.response.data);  
+        }
+      });
+  };
+
   return (
     <View style={style.body}>
       <Text style={style.btnText}>Cadastre-se agora mesmo!</Text>
@@ -59,21 +86,24 @@ const SignIn=({navigation})=> {
         onChangeText={setSenha}
       />
 
-      <TouchableOpacity value="Cadastrar" onPress={()=>{
-        const obj={nome,email,senha}
-        contexto.cadastrar(obj);
-        navigation.navigate('Login')
-        
-      }}>
+      <TouchableOpacity
+        value="Cadastrar"
+        onPress={() => {
+          const obj = { nome, email, senha };
+          cadastrarUsuario(obj);
+          // contexto.cadastrar(obj);
+          // navigation.navigate('Login')
+        }}
+      >
         <View style={style.btnCadastrar}>
           <Text style={style.btnText}>Cadastre-se</Text>
         </View>
       </TouchableOpacity>
     </View>
   );
-}
+};
 
-export default SignIn
+export default SignIn;
 
 //Estilização
 const style = StyleSheet.create({

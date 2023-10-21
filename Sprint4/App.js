@@ -3,61 +3,76 @@ import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+<<<<<<< HEAD:Sprint4/App.js
 
 import axios from 'axios';
+=======
+import axios from "axios";
+>>>>>>> b43503ba699dd4006cde5ddd94714795b931ceba:App.js
 
 // Importe de Funções e componente
 import { Contexto } from "./src/components/contexto";
-
-
 
 // Importe de telas
 import HomeScreen from "./src/Telas/Intro";
 import RegisterScreen from "./src/Telas/Register";
 import LoginScreen from "./src/Telas/Login";
 import ChatScreen from "./src/Telas/Chat";
+<<<<<<< HEAD:Sprint4/App.js
 import Menu from "./src/Telas/MenuProfile"
 
 
 
 const esconderTab ={headerTransparent:true, headerShown:false}
+=======
+import Menu from "./src/Telas/MenuProfile";
+
+>>>>>>> b43503ba699dd4006cde5ddd94714795b931ceba:App.js
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const api = axios.create({
+  baseURL: "https://databs-b6b35-default-rtdb.firebaseio.com",
+});
 
-const api = axios.create({ baseURL: "https://databs-b6b35-default-rtdb.firebaseio.com" });
-
-const MenuScreen=()=>{
-  return(
-    <View style={{flex:1}}>
+const MenuScreen = () => {
+  return (
+    <View style={{ flex: 1 }}>
       <NavigationContainer independent={true}>
+<<<<<<< HEAD:Sprint4/App.js
         <Tab.Navigator initialRouteName="Página">
           <Tab.Screen name="ChatBot" component={ChatScreen} options={esconderTab}/>
           <Tab.Screen name="Menu" component={Menu}options={esconderTab}/>
+=======
+        <Tab.Navigator>
+          <Tab.Screen name="ChatBot" component={ChatScreen} />
+          <Tab.Screen name="Menu" component={Menu} />
+>>>>>>> b43503ba699dd4006cde5ddd94714795b931ceba:App.js
         </Tab.Navigator>
       </NavigationContainer>
     </View>
-  )
-}
-export default function App({navigation}) {
-
-const [lista, setLista] = useState([]);
-const salvar = (obj) => {
+  );
+};
+export default function App({ navigation }) {
+  const [lista, setLista] = useState([]);
+  const salvar = (obj) => {
     setLista([...lista, obj]);
   };
 
   const cadastrar = (obj) => {
-    api.post("/users.json",obj)
+    api
+      .post("/users.json", obj)
       .then((resposta) => {
         alert("Cadastro Concluído!");
       })
       .catch((err) => {
-        alert("Erro ao criar cadastro!"+err);
+        alert("Erro ao criar cadastro!" + err);
       });
   };
 
   const listar = () => {
-    api.get("/users.json")
+    api
+      .get("/users.json")
       .then((response) => {
         const listaNova = [];
         for (const chave in response.data) {
@@ -83,7 +98,7 @@ const salvar = (obj) => {
         cadastrar,
         remover,
         salvar,
-        lista
+        lista,
       }}
     >
       <View style={{ flex: 1 }}>
