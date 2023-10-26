@@ -54,7 +54,8 @@ const App = () => {
             <View style={{ alignSelf: item.isSent ? "flex-end" : "flex-start" }}>
               <View
                 style={{
-                  backgroundColor: item.isSent ? "#4CAF50" : "#007AFF",
+                  backgroundColor: item.isSent ? "grey" : "#ff573d",
+                  color: "#000",
                   padding: 10,
                   borderRadius: 10,
                   margin: 5,
@@ -86,7 +87,7 @@ const App = () => {
           <TouchableOpacity
             onPress={sendMessage}
             style={{
-              backgroundColor: "#007AFF",
+              backgroundColor: "#ff573d",
               padding: 8,
               borderRadius: 5,
               marginLeft: 8,
