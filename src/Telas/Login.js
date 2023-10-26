@@ -121,7 +121,7 @@ export default Login;
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ef4023",
+    backgroundColor: "#e5e5e5",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -129,14 +129,14 @@ const style = StyleSheet.create({
   title: {
     fontSize: 35,
     fontWeight: "bold",
-    color: "white",
+    color: "black",
   },
 
   titleInput: {
     fontSize: 20,
     fontWeight: "bold",
     letterSpacing: 2,
-    color: "#fff",
+    color: "black",
     marginTop: 20,
   },
 
@@ -152,7 +152,7 @@ const style = StyleSheet.create({
   },
 
   btnLogin: {
-    fontSize: 30,
+    fontSize: 20,
     backgroundColor: "#ef4023",
     position: "relative",
     top: 60,
@@ -163,17 +163,18 @@ const style = StyleSheet.create({
     borderWidth: 2,
   },
   btnText: {
-    fontSize: 30,
+    fontSize: 20,
     color: "white",
+    fontWeight:"bold"
   },
 
   esqueceuSenhaText: {
     textDecorationStyle: "solid",
     textDecorationLine: "underline",
     marginVertical: 10,
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
-    color: "white",
+    color: "black",
   },
 
   modalContainer: {
